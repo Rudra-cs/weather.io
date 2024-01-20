@@ -35,11 +35,11 @@ const GetLocation = () => {
   return (
     <>
       <div
-        className="bg-gray-100 px-4 py-3 justify-center items-center flex rounded-lg hover:scale-90 transition ease-out cursor-pointer"
+        className="bg-gray-100 px-4 py-3 justify-center items-center flex rounded-lg hover:scale-90 transition ease-out cursor-pointer dark:bg-slate-900"
         onClick={handleLocationClick}
       >
         <img
-          className="transition ease-out hover:scale-125"
+          className="transition ease-out hover:scale-125 dark:invert"
           src="location.svg"
           alt=""
         />

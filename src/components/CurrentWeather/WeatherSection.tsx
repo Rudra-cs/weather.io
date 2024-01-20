@@ -4,18 +4,24 @@ import HourlyForecastCard from "./HourlyForecastCard";
 import WeatherCard from "./WeatherCard";
 import { weather } from "../../store/weatherStore";
 import { useConvertTimeHours } from "../../utils/useConvertTime";
+import { ForecastRoot } from "../../types";
+import { forecastState } from "../../store/forecastStore";
 
 const WeatherSection = () => {
   const weatherData = useRecoilValue(weather);
+  const forecastdata = useRecoilValue<ForecastRoot>(forecastState);
+  const hourlyForecast = forecastdata?.list.slice(0, 5) || [];
 
   return (
     <div className="head">
-      <h1 className="my-10 text-3xl font-base ">Today Overview</h1>
+      <h1 className="my-10 text-3xl font-base dark:text-white font-mono">
+        Today Overview
+      </h1>
       <div className="flex justify-between flex-wrap gap-x-2">
         <div className="w-full sm:w-[49%] md:w-[49%] xl:w-[25%] mb-3">
           <WeatherCard />
         </div>
-        <div className="w-full sm:w-[49%] md:w-[49%] xl:w-[25%]  bg-slate-50">
+        <div className="w-full sm:w-[49%] md:w-[49%] xl:w-[25%]  bg-transparent ">
           <Card
             image="./animated/wind-speed"
             property="Wind Speed"
@@ -55,12 +61,14 @@ const WeatherSection = () => {
             units=""
           />
         </div>
-        <div className="w-full sm:w-[49%] md:w-[49%] xl:w-[22%] mb-3 bg-gray-50 h-full rounded-lg">
-          <HourlyForecastCard />
-          <HourlyForecastCard />
-          <HourlyForecastCard />
-          <HourlyForecastCard />
-          <HourlyForecastCard />
+        <div className="w-full sm:w-[49%] md:w-[49%] xl:w-[22%] mb-3 bg-gray-50 dark:bg-slate-900 h-full rounded-lg">
+          {hourlyForecast.map((item, index) => {
+            return (
+              <div key={index}>
+                <HourlyForecastCard mpIndex={index} />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

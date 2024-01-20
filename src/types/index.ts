@@ -2,6 +2,8 @@ export type optionType = {
   name: string;
   lat: number;
   lon: number;
+  state: string;
+  country: string;
 };
 
 export type LatLong = {

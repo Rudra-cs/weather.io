@@ -6,12 +6,13 @@ import { useRecoilState } from "recoil";
 import { weather } from "./store/weatherStore";
 import { forecastState } from "./store/forecastStore";
 import { useWeatherAndForecast } from "./utils/weatherAPI";
+import Loader from "./components/Loader";
 
 const App = (): JSX.Element => {
   const [theme] = useTheme();
   const [weatherdata, setWeatherData] = useRecoilState(weather);
   const [forecastdata, setForecastData] = useRecoilState(forecastState);
-  const [city] = useState<string>("Bhubaneswar");
+  const [city] = useState<string>("Tokyo");
 
   const {
     weather: data,
@@ -28,7 +29,7 @@ const App = (): JSX.Element => {
   }, [data, setWeatherData, forecast, setForecastData]);
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <Loader />;
   }
 
   if (error) {
@@ -36,14 +37,16 @@ const App = (): JSX.Element => {
   }
 
   return (
-    <div className={`${theme} select-none h-screen `}>
+    <div
+      className={`${theme} dark:bg-slate-800 select-none h-screen overflow-auto`}
+    >
       {weatherdata && forecastdata ? (
-        <div className=" dark:bg-slate-800 max-w-screen-xl py-3 px-3 md:py-5 sm:px-6 justify-center items-center mx-auto">
+        <div className="  max-w-screen-xl py-3 px-3 md:py-5 sm:px-6 justify-center items-center mx-auto">
           <AppBar />
           <WeatherSection />
         </div>
       ) : (
-        <h1>404 error occured</h1>
+        <Loader />
       )}
     </div>
   );
