@@ -1,5 +1,3 @@
-// utils/weatherAPI.js
-
 import { useFetch } from "./useFetch";
 import { DataFetchingResult, ForecastRoot, Root } from "../types";
 

@@ -22,16 +22,23 @@ const HourlyForecastCard = ({
         <div className="py-[1px]">
           <div className="flex flex-row bg-transparent h-[75px]  pl-8 rounded-lg dark:text-white dark:bg-slate-900">
             <div className="flex-col flex justify-between items-start py-3">
-              <p className="text-sm font-light text-gray-500 ">
+              <p className="text-base font-light text-gray-500 ">
                 {convertedDay}
               </p>
               <p className="text-base text-slate-900 dark:text-white">
                 {convertedHours}
               </p>
             </div>
-            <p className="ml-auto font-medium text-base text-slate-900 mr-8 flex justify-end items-center dark:text-white">
-              {Math.floor(forecastdata?.list[mpIndex].main.temp)}°C
-            </p>
+            <div className="ml-auto mr-8  flex justify-end items-center">
+              <img
+                className="mr-2 dark:invert"
+                src={`/animated/${forecastdata?.list[mpIndex].weather[0].icon}.svg`}
+                alt="Icon"
+              />
+              <p className=" font-medium text-base text-slate-900  dark:text-white">
+                {Math.floor(forecastdata?.list[mpIndex].main.temp)}°C
+              </p>
+            </div>
           </div>
         </div>
       )}

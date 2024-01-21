@@ -1,18 +1,25 @@
-import AppBar from "./components/AppBar/AppBar";
-import WeatherSection from "./components/CurrentWeather/WeatherSection";
+// import AppBar from "./components/AppBar/AppBar";
+// import WeatherSection from "./components/CurrentWeather/WeatherSection";
 import useTheme from "./utils/theme";
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { weather } from "./store/weatherStore";
 import { forecastState } from "./store/forecastStore";
 import { useWeatherAndForecast } from "./utils/weatherAPI";
 import Loader from "./components/Loader";
+// Lazy load the AppBar component
+const LazyAppBar = lazy(() => import("./components/AppBar/AppBar"));
+
+// Lazy load the WeatherSection component
+const LazyWeatherSection = lazy(
+  () => import("./components/CurrentWeather/WeatherSection")
+);
 
 const App = (): JSX.Element => {
   const [theme] = useTheme();
   const [weatherdata, setWeatherData] = useRecoilState(weather);
   const [forecastdata, setForecastData] = useRecoilState(forecastState);
-  const [city] = useState<string>("Tokyo");
+  const [city] = useState<string>("Bhubaneswar");
 
   const {
     weather: data,
@@ -42,8 +49,10 @@ const App = (): JSX.Element => {
     >
       {weatherdata && forecastdata ? (
         <div className="  max-w-screen-xl py-3 px-3 md:py-5 sm:px-6 justify-center items-center mx-auto">
-          <AppBar />
-          <WeatherSection />
+          <Suspense fallback={<Loader />}>
+            <LazyAppBar />
+            <LazyWeatherSection />
+          </Suspense>
         </div>
       ) : (
         <Loader />

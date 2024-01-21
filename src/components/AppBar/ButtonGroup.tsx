@@ -27,9 +27,8 @@ const ButtonGroup = () => {
         >
           <button className="bg-slate-900 dark:bg-gray-50 text-none text-slate-50 py-3 px-4 rounded-lg inline-flex items-center transform hover:scale-90">
             <img
-              className="h-6 w-6 mr-2 hover:scale-110 transition ease-out"
+              className="h-6 w-6 mr-2 hover:scale-110 transition ease-in-out "
               src={`${githubIcon}.svg`}
-              alt=""
             />
             <p className="font-medium dark:text-slate-900 dark:font-semibold">
               Support Project{" "}

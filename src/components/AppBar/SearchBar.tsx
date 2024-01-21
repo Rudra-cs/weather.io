@@ -1,33 +1,48 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import GetLocation from "./GetLocation";
 import { optionType } from "../../types";
-import { debounce } from "lodash";
+import { useRecoilState } from "recoil";
+import { forecastState } from "../../store/forecastStore";
+import { weather } from "../../store/weatherStore";
 
 // http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
 
 const SearchBar = (): JSX.Element => {
   const [term, setTerm] = useState<string>("");
   const [options, setOptions] = useState<[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
+  const [weatherdata, setWeatherData] = useRecoilState(weather);
+  const [forecastdata, setForecastData] = useRecoilState(forecastState);
 
   const getSearchOptions = (value: string) => {
+    setIsDropdownVisible(true);
+    setLoading(true);
     fetch(
       `http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=${
         import.meta.env.VITE_API_KEY
-      }`
+      }&units=metric`
     )
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
         setOptions(data || []);
         setIsDropdownVisible(data && data.length > 0);
-        console.log({ data });
       });
   };
 
-  const debouncedGetSearchOptions = debounce(getSearchOptions, 600);
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (term.trim() !== "") {
+        getSearchOptions(term);
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [term]);
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -38,29 +53,69 @@ const SearchBar = (): JSX.Element => {
       setIsDropdownVisible(false);
       return;
     }
-    debouncedGetSearchOptions(value);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && options.length > 0) {
+      // If Enter key is pressed and there are options, select the first option
+      getWeatherAndForecast(term);
+      setTimeout(() => {
+        setIsDropdownVisible(false);
+      }, 200);
+    }
   };
 
   function onOptionSelect(option: optionType) {
     setSelectedOption(option);
-    console.log(selectedOption);
-    setIsDropdownVisible(false);
+    getWeatherAndForecast(option?.name);
+    setTimeout(() => {
+      setIsDropdownVisible(false);
+    }, 200);
   }
+
+  const getWeatherAndForecast = (city: string) => {
+    // api call
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${
+        import.meta.env.VITE_API_KEY
+      }&units=metric`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        setWeatherData(data);
+      });
+
+    fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${
+        import.meta.env.VITE_API_KEY
+      }&units=metric`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        setIsDropdownVisible(false);
+        setForecastData(data);
+      });
+  };
 
   const onFocus = () => {
     setIsDropdownVisible(true);
   };
 
   const onBlur = () => {
+    // Check if relatedTarget is not within the dropdown to avoid hiding when clicking on options
     setTimeout(() => {
-      setIsDropdownVisible(false);
-    }, 200); // Delay to allow clicking on dropdown options
+      if (!document.activeElement?.closest(".dropdown-container")) {
+        setIsDropdownVisible(false);
+      }
+    }, 200);
   };
 
   return (
     <div className="flex shrink gap-3 md:order-none order-3 w-[900px] ">
       <div className=" w-full ">
-        <div className="relative ">
+        <div className="relative dropdown-container">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="absolute top-0 bottom-0 w-6 h-6 my-auto text-slate-900 left-3 dark:invert"
@@ -81,24 +136,11 @@ const SearchBar = (): JSX.Element => {
             onChange={onInputChange}
             type="text"
             onFocus={onFocus}
+            onKeyDown={onKeyDown}
             onBlur={onBlur}
             placeholder="Bhubaneswar"
             className="w-full py-3 pl-12 pr-4 text-slate-900 dark:text-white font-normal border-transparent rounded-md outline-none bg-gray-100 dark:bg-slate-900"
           />
-          {/* <ul className="absolute w-full mt-1 bg-gray-100 dark:bg-slate-900 text-slate-900 rounded-lg ">
-            {options.map((option: optionType, index: number) => (
-              <li key={option.name + "-" + index}>
-                <button
-                  className="h-10 text-left text-sm w-full hover:bg-slate-900 rounded mb-1 hover:text-white px-2 py-1 cursor-pointer dark:bg-slate-900 dark:text-white"
-                  onClick={() => {
-                    onOptionSelect(option);
-                  }}
-                >
-                  {option.name}, {option.country}
-                </button>
-              </li>
-            ))}
-          </ul> */}
 
           {options.length === 0 &&
             !loading &&
@@ -112,7 +154,7 @@ const SearchBar = (): JSX.Element => {
             )}
           {loading && (
             <div className="absolute w-full mt-1 bg-gray-100 dark:bg-slate-900 text-slate-900 rounded-lg">
-              <p className="h-10 text-left text-sm px-2 py-1 dark:text-white">
+              <p className=" text-center h-10  text-sm px-2 py-1 dark:text-white">
                 Loading...
               </p>
             </div>
@@ -132,6 +174,14 @@ const SearchBar = (): JSX.Element => {
                 </li>
               ))}
             </ul>
+          )}
+
+          {loading && (
+            <div className="absolute w-full mt-1 bg-gray-100 dark:bg-slate-900 text-slate-900 rounded-lg">
+              <p className=" text-center h-10  text-sm px-2 py-1 dark:text-white">
+                Loading...
+              </p>
+            </div>
           )}
         </div>
       </div>
