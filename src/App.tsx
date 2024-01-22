@@ -7,12 +7,13 @@ import { weather } from "./store/weatherStore";
 import { forecastState } from "./store/forecastStore";
 import { useWeatherAndForecast } from "./utils/weatherAPI";
 import Loader from "./components/Loader";
-// Lazy load the AppBar component
-const LazyAppBar = lazy(() => import("./components/AppBar/AppBar"));
 
-// Lazy load the WeatherSection component
+const LazyAppBar = lazy(() => import("./components/AppBar/AppBar"));
 const LazyWeatherSection = lazy(
   () => import("./components/CurrentWeather/WeatherSection")
+);
+const LazyForecastSection = lazy(
+  () => import("./components/ForecastWeather/ForecastFiveDay")
 );
 
 const App = (): JSX.Element => {
@@ -52,6 +53,7 @@ const App = (): JSX.Element => {
           <Suspense fallback={<Loader />}>
             <LazyAppBar />
             <LazyWeatherSection />
+            <LazyForecastSection />
           </Suspense>
         </div>
       ) : (

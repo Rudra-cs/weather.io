@@ -29,7 +29,7 @@ const WeatherCard = (): JSX.Element => {
         <hr className=" my-[25px] mx-[16px] border-solid border-t-1 border-slate-900 max-w-[75%] dark:border-gray-500" />
         <div className="flex flex-row my-[14px] mx-[16px]">
           <svg
-            className="mr-5"
+            className="mr-3"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -53,7 +53,7 @@ const WeatherCard = (): JSX.Element => {
         </div>
         <div className="flex flex-row mx-[16px] ">
           <svg
-            className="mr-5"
+            className="mr-3"
             width="24"
             height="24"
             viewBox="0 0 24 24"
