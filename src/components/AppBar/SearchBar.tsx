@@ -13,7 +13,9 @@ const SearchBar = (): JSX.Element => {
   const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [weatherdata, setWeatherData] = useRecoilState(weather);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [forecastdata, setForecastData] = useRecoilState(forecastState);
 
   const getSearchOptions = (value: string) => {
