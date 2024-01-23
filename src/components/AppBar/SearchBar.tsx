@@ -5,7 +5,6 @@ import { useRecoilState } from "recoil";
 import { forecastState } from "../../store/forecastStore";
 import { weather } from "../../store/weatherStore";
 
-// http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
 
 const SearchBar = (): JSX.Element => {
   const [term, setTerm] = useState<string>("");
@@ -20,7 +19,7 @@ const SearchBar = (): JSX.Element => {
     setIsDropdownVisible(true);
     setLoading(true);
     fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=${
+      `https://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     )
@@ -76,7 +75,7 @@ const SearchBar = (): JSX.Element => {
   const getWeatherAndForecast = (city: string) => {
     // api call
     fetch(
-      `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     )
@@ -87,7 +86,7 @@ const SearchBar = (): JSX.Element => {
       });
 
     fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${
+      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     )

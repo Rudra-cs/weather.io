@@ -10,7 +10,7 @@ const GetLocation = () => {
   const getWeatherAndForecast = (lat: number, lon: number) => {
     // api call
     fetch(
-      `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     )
@@ -20,7 +20,7 @@ const GetLocation = () => {
       });
 
     fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     )
