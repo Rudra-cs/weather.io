@@ -31,7 +31,7 @@ const HourlyForecastCard = ({
             </div>
             <div className="ml-auto mr-8  flex justify-end items-center">
               <img
-                className="mr-2 dark:invert"
+                className="mr-2 dark:invert h-12 w-12"
                 src={`/animated/${forecastdata?.list[mpIndex].weather[0].icon}.svg`}
                 alt="Icon"
               />

@@ -2,6 +2,8 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { forecastState } from "../../store/forecastStore";
 import { AreaChart, Card, Title } from "@tremor/react";
+import ForecastCard from "./ForecastCard";
+import { Link } from "react-router-dom";
 
 interface TemperatureInfo {
   temp: number;
@@ -13,6 +15,7 @@ interface TemperatureInfo {
   icon: string;
   windSpeed: number;
   windDirection: number;
+  visibility: number;
 }
 
 interface Weather {
@@ -32,6 +35,7 @@ interface Weather {
     speed: number;
     deg: number;
   };
+  visibility: number;
 }
 
 const valueFormatter = function (number: number) {
@@ -59,6 +63,7 @@ const ForecastFiveDay: React.FunctionComponent = () => {
         icon: weatherDetails.icon,
         windSpeed: wind.speed,
         windDirection: wind.deg,
+        visibility: weather.visibility,
       };
     } else {
       temperatureInfo[date].temp_min = Math.min(
@@ -76,6 +81,7 @@ const ForecastFiveDay: React.FunctionComponent = () => {
       temperatureInfo[date].icon = weatherDetails.icon;
       temperatureInfo[date].windSpeed = wind.speed;
       temperatureInfo[date].windDirection = wind.deg;
+      temperatureInfo[date].visibility = weather.visibility;
     }
   });
 
@@ -100,6 +106,7 @@ const ForecastFiveDay: React.FunctionComponent = () => {
         windDirection: tempInfo.windDirection,
         sunrise: weatherList.city.sunrise,
         sunset: weatherList.city.sunset,
+        visibility: tempInfo.visibility,
       };
     }
   );
@@ -139,18 +146,23 @@ const ForecastFiveDay: React.FunctionComponent = () => {
           />
         </Card>
       </div>
-      <div>
-        <ul>
-          {forecastData.map((info) => (
-            <li key={info.date}>
-              {info.date}: Temp: {info.temp.toFixed(2)}°C, Min:{" "}
-              {info.temp_min.toFixed(2)}°C, Max: {info.temp_max.toFixed(2)}°C,
-              Pressure: {info.pressure} hPa, Humidity: {info.humidity}%,
-              Description: {info.description}, Icon: {info.icon}, Wind Speed:{" "}
-              {info.windSpeed} m/s, Wind Direction: {info.windDirection}°,
-            </li>
-          ))}
-        </ul>
+      {/* Forecast Element Card */}
+      <div className="flex flex-col my-2  bg-transparent rounded-lg">
+        {forecastData.map((info) => (
+          <ForecastCard weatherData={info} />
+        ))}
+      </div>
+      <div className="flex justify-center items-center">
+        <p className="dark:text-white text-slate-500 font-mono  ">
+          Made with ❤ By
+          <Link
+            className="hover:text-blue-500 hover:dark:text-blue-500"
+            to={"https://github.com/Rudra-cs"}
+          >
+            {" "}
+            Rudra Behera.
+          </Link>
+        </p>
       </div>
     </div>
   );

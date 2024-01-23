@@ -64,7 +64,7 @@ const WeatherSection = () => {
         <div className="w-full sm:w-[49%] md:w-[49%] xl:w-[22%] mb-3 bg-gray-100 dark:bg-slate-900 h-full rounded-lg">
           {hourlyForecast.map((item, index) => {
             return (
-              <div key={index}>
+              <div key={index + "-" + item.dt}>
                 <HourlyForecastCard mpIndex={index} />
               </div>
             );

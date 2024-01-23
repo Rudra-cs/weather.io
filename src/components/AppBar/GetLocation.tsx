@@ -1,11 +1,33 @@
-import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { forecastState } from "../../store/forecastStore";
+import { weather } from "../../store/weatherStore";
 
 const GetLocation = () => {
-  type LatLong = {
-    latitude: number;
-    longitude: number;
+  const [weatherdata, setWeatherData] = useRecoilState(weather);
+  const [forecastdata, setForecastData] = useRecoilState(forecastState);
+
+  const getWeatherAndForecast = (lat: number, lon: number) => {
+    // api call
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
+        import.meta.env.VITE_API_KEY
+      }&units=metric`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setWeatherData(data);
+      });
+
+    fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${
+        import.meta.env.VITE_API_KEY
+      }&units=metric`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setForecastData(data);
+      });
   };
-  const [location, setLocation] = useState<LatLong | null>(null);
 
   function handleLocationClick() {
     if (navigator.geolocation) {
@@ -21,10 +43,8 @@ const GetLocation = () => {
     const latitude: number = position.coords.latitude;
     const longitude: number = position.coords.longitude;
 
-    setLocation({ latitude, longitude });
-    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-
     // Make API call to OpenWeatherMap
+    getWeatherAndForecast(latitude, longitude);
   }
 
   function error() {
@@ -44,20 +64,6 @@ const GetLocation = () => {
           alt=""
         />
       </div>
-      {location?.latitude}
-      {/* <div>
-        {!location ? (
-          <button onClick={handleLocationClick}>Get Location</button>
-        ) : null}
-        {location && !weather ? <p>Loading weather data...</p> : null}
-        {weather ? (
-          <div>
-            <p>Location: {weather}</p>
-            <p>Temperature: {weather} °C</p>
-            <p>Weather: {weather}</p>
-          </div>
-        ) : null}
-      </div> */}
     </>
   );
 };
