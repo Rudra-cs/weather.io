@@ -13,7 +13,7 @@
     An awesome minimal weather application built using React.js and Typescript.
     <br />
     <br />
-    <a href="#">View Demo</a>
+    <a href="https://weather-io-olive.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/Rudra-cs/weather.io/issues">Report Bug</a>
     ·
