@@ -148,8 +148,8 @@ const ForecastFiveDay: React.FunctionComponent = () => {
       </div>
       {/* Forecast Element Card */}
       <div className="flex flex-col my-2  bg-transparent rounded-lg">
-        {forecastData.map((info) => (
-          <ForecastCard weatherData={info} />
+        {forecastData.map((info, index) => (
+          <ForecastCard key={info + "-" + index} weatherData={info} />
         ))}
       </div>
       <div className="flex justify-center items-center">

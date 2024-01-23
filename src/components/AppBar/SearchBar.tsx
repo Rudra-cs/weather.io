@@ -13,9 +13,7 @@ const SearchBar = (): JSX.Element => {
   const [selectedOption, setSelectedOption] = useState<optionType | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [weatherdata, setWeatherData] = useRecoilState(weather);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [forecastdata, setForecastData] = useRecoilState(forecastState);
 
   const getSearchOptions = (value: string) => {
@@ -98,6 +96,11 @@ const SearchBar = (): JSX.Element => {
         setLoading(false);
         setIsDropdownVisible(false);
         setForecastData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(weatherdata);
+        console.log(forecastdata);
       });
   };
 
@@ -176,14 +179,6 @@ const SearchBar = (): JSX.Element => {
                 </li>
               ))}
             </ul>
-          )}
-
-          {loading && (
-            <div className="absolute w-full mt-1 bg-gray-100 dark:bg-slate-900 text-slate-900 rounded-lg">
-              <p className=" text-center h-10  text-sm px-2 py-1 dark:text-white">
-                Loading...
-              </p>
-            </div>
           )}
         </div>
       </div>

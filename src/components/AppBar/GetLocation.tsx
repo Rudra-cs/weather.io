@@ -1,11 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRecoilState } from "recoil";
 import { forecastState } from "../../store/forecastStore";
 import { weather } from "../../store/weatherStore";
 
 const GetLocation = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [weatherdata, setWeatherData] = useRecoilState(weather);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [forecastdata, setForecastData] = useRecoilState(forecastState);
 
   const getWeatherAndForecast = (lat: number, lon: number) => {
@@ -51,6 +50,8 @@ const GetLocation = () => {
 
   function error() {
     console.log("Unable to retrieve your location");
+    console.log(weatherdata);
+    console.log(forecastdata);
     alert("Please enable location permission!!");
   }
 
