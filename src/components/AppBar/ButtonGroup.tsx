@@ -25,12 +25,12 @@ const ButtonGroup = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <button className="bg-slate-900 dark:bg-gray-50 text-none text-slate-50 py-[13px] px-4 rounded-lg inline-flex items-center transform hover:scale-90">
+          <button className="bg-slate-900 dark:bg-gray-50 text-none text-slate-50 py-[13px] sm:px-2 px-0.5  rounded-lg inline-flex items-center transform hover:scale-90">
             <img
-              className="h-6 w-6 mr-2 hover:scale-110 transition ease-in-out "
+              className="h-6 w-10 pl-1 sm:pl-0 sm:w-6 mr-2 hover:scale-110 transition ease-in-out "
               src={`${githubIcon}.svg`}
             />
-            <p className="font-medium dark:text-slate-900 dark:font-semibold">
+            <p className="font-medium hidden sm:block  text-medium dark:text-slate-900 dark:font-semibold">
               Support Project{" "}
             </p>
           </button>
